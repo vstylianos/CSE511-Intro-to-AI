@@ -581,9 +581,28 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 class ApproximateSearchAgent(Agent):
     "Implement your contest entry here.  Change anything but the class name."
 
-    def registerInitialState(self, state):
+#     def registerInitialState(self, state):
+#         "This method is called before any moves are made."
+#         "*** YOUR CODE HERE ***"
+
+#     def getAction(self, state):
+#         """
+#         From game.py:
+#         The Agent will receive a GameState and must return an action from
+#         Directions.{North, South, East, West, Stop}
+#         """
+#         "*** YOUR CODE HERE ***"
+#         util.raiseNotDefined()
+        
+def registerInitialState(self, state):
         "This method is called before any moves are made."
-        "*** YOUR CODE HERE ***"
+        problem = CornersProblem(state)
+        stat = search.aStarSearch(problem, cornersHeuristic)
+        self.answer = answer
+        self.secondAnswer = []
+        self.time = 0
+        
+        self.initialFoodCount = state.getFood().count()
 
     def getAction(self, state):
         """
@@ -591,9 +610,29 @@ class ApproximateSearchAgent(Agent):
         The Agent will receive a GameState and must return an action from
         Directions.{North, South, East, West, Stop}
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+       
+        
+        if len(self.answer) > 0:
+            answer = self.answer[0]
+            self.answer = self.answer[1:]
+            return answer
+        else:
+            self.time = 1
 
+        if state.getFood().count() <= 20 and self.time == 1:
+            problem = FoodSearchProblem(state)
+            self.answer = search.aStarSearch(problem, foodHeuristic)
+            answer = self.answer[0]
+            self.answer = self.answer[1:]
+            return answer
+
+        
+        problem = AnyFoodSearchProblem(state)
+        self.answer = search.bfs(problem)
+        answer = self.answer[0]
+        self.answer = self.answer[1:]
+        return answer
+    
 def mazeDistance(point1, point2, gameState):
     """
     Returns the maze distance between any two points, using the search functions
