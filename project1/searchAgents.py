@@ -580,26 +580,13 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
 class ApproximateSearchAgent(Agent):
     "Implement your contest entry here.  Change anything but the class name."
-
-#     def registerInitialState(self, state):
-#         "This method is called before any moves are made."
-#         "*** YOUR CODE HERE ***"
-
-#     def getAction(self, state):
-#         """
-#         From game.py:
-#         The Agent will receive a GameState and must return an action from
-#         Directions.{North, South, East, West, Stop}
-#         """
-#         "*** YOUR CODE HERE ***"
-#         util.raiseNotDefined()
         
 def registerInitialState(self, state):
         "This method is called before any moves are made."
         problem = CornersProblem(state)
-        stat = search.aStarSearch(problem, cornersHeuristic)
-        self.answer = answer
-        self.secondAnswer = []
+        solution = search.aStarSearch(problem, cornersHeuristic)
+        self.solution = solution
+        self.solution2 = []
         self.time = 0
         
         self.initialFoodCount = state.getFood().count()
@@ -610,28 +597,26 @@ def registerInitialState(self, state):
         The Agent will receive a GameState and must return an action from
         Directions.{North, South, East, West, Stop}
         """
-       
-        
-        if len(self.answer) > 0:
-            answer = self.answer[0]
-            self.answer = self.answer[1:]
-            return answer
+        if len(self.solution) > 0:
+            solution = self.solution[0]
+            self.solution = self.solution[1:]
+            return solution
         else:
             self.time = 1
 
         if state.getFood().count() <= 20 and self.time == 1:
             problem = FoodSearchProblem(state)
-            self.answer = search.aStarSearch(problem, foodHeuristic)
-            answer = self.answer[0]
-            self.answer = self.answer[1:]
-            return answer
+            self.solution = search.aStarSearch(problem, foodHeuristic)
+            solution = self.solution[0]
+            self.solution = self.solution[1:]
+            return solution
 
         
         problem = AnyFoodSearchProblem(state)
         self.answer = search.bfs(problem)
-        answer = self.answer[0]
-        self.answer = self.answer[1:]
-        return answer
+        solution = self.solution[0]
+        self.solution = self.solution[1:]
+        return solution
     
 def mazeDistance(point1, point2, gameState):
     """
